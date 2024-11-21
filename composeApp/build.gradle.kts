@@ -6,6 +6,8 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+
+    alias(libs.plugins.kotlinxSerialization)
 }
 
 kotlin {
@@ -28,12 +30,12 @@ kotlin {
     }
     
     sourceSets {
-
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
 
             implementation(libs.ktor.client.okhttp)
+            implementation(libs.koin.android)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -45,17 +47,24 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
 
-            //ktor
+            implementation(libs.slf4j.log4j12)
+
+//            ktor
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.serialization.kotlinx.json)
 
-            //moko
+//            moko
             implementation(libs.moko.mvvm.core)
             implementation(libs.moko.mvvm.compose)
 
-            //kamel
+//            kamel
             implementation(libs.kamel)
+
+//            Di
+            implementation(libs.kodein.di.compose)
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose)
         }
     }
 }
@@ -82,8 +91,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 }
 
