@@ -11,7 +11,8 @@ import org.koin.compose.koinInject
 
 @Composable
 fun HomeScreen(
-    viewModel: HomeViewModel = koinInject()
+    viewModel: HomeViewModel = koinInject(),
+    navigateToListScreen: (ListInfoModel) -> Unit
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -19,9 +20,10 @@ fun HomeScreen(
         viewModel.initiateData()
     }
 
-    AllLists(state.lists) {
-
-    }
+    AllLists(
+        collections = state.lists,
+        onCollectionClick = navigateToListScreen
+    )
 }
 
 @Composable

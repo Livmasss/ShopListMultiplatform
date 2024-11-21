@@ -61,6 +61,9 @@ kotlin {
 //            kamel
             implementation(libs.kamel)
 
+//            Navigation
+            implementation(libs.navigation.compose)
+
 //            Di
             implementation(libs.kodein.di.compose)
             implementation(libs.koin.core)
