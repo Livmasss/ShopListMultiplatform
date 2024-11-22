@@ -29,7 +29,12 @@ fun MainRouter() {
             )
         ) { navBackStackEntry ->
             val route: MainDest.ShopList = navBackStackEntry.toRoute()
-            ShopListScreen(route.mainInfo)
+            ShopListScreen(
+                shopListInfoModel = route.mainInfo,
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
         }
     }
 }
