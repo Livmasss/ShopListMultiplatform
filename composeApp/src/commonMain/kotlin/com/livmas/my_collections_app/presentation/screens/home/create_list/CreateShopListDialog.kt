@@ -16,6 +16,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.Dialog
 import com.livmas.my_collections_app.presentation.screens.home.HomeScreenIntent
 import com.livmas.my_collections_app.presentation.theme.spacing
+import mycollectionsapp.composeapp.generated.resources.Res
+import mycollectionsapp.composeapp.generated.resources.label_create
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun CreateShopListDialog(
@@ -46,7 +49,7 @@ fun CreateShopListDialog(
                         ))
                     }
                 ) {
-                    Text("Create")
+                    Text(stringResource(Res.string.label_create))
                 }
             }
         }

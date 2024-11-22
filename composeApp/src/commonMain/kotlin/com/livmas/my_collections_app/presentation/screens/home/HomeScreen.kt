@@ -2,6 +2,7 @@ package com.livmas.my_collections_app.presentation.screens.home
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -15,6 +16,9 @@ import com.livmas.my_collections_app.presentation.models.ShopListInfoModel
 import com.livmas.my_collections_app.presentation.screens.home.create_list.CreateShopListDialog
 import com.livmas.my_collections_app.presentation.theme.ShopListsTheme
 import com.livmas.my_collections_app.utils.ScreenState
+import mycollectionsapp.composeapp.generated.resources.Res
+import mycollectionsapp.composeapp.generated.resources.ic_create
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 
@@ -73,7 +77,10 @@ private fun CreateShopListButton(
     FloatingActionButton(
         onClick = onClick
     ) {
-
+        Icon(
+            painter = painterResource(Res.drawable.ic_create),
+            contentDescription = null
+        )
     }
 }
 
