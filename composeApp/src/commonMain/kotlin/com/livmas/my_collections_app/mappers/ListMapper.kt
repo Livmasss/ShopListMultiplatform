@@ -17,3 +17,10 @@ fun ListInfo.toPresentation(): ShopListInfoModel {
         name = name
     )
 }
+
+fun ShopListInfoModel.toDomain(): ListInfo {
+    return ListInfo(
+        id = id,
+        name = name
+    )
+}

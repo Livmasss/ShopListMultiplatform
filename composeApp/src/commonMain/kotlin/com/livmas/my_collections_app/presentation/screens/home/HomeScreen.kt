@@ -1,14 +1,19 @@
 package com.livmas.my_collections_app.presentation.screens.home
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.ExtendedFloatingActionButton
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.key.Key.Companion.R
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.livmas.my_collections_app.presentation.theme.ShopListsTheme
 import com.livmas.my_collections_app.utils.ScreenState
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 
@@ -35,12 +40,29 @@ private fun HomeFrame(
     onIntent: (HomeScreenIntent) -> Unit,
     onShopListClick: (ShopListInfoModel) -> Unit
 ) {
-    Scaffold {
+    Scaffold(
+        floatingActionButton = {
+            CreateShopListButton(onIntent)
+        }
+    ) {
         AllShopLists(
             modifier = Modifier.padding(it),
             shopLists =  state.lists,
             onShopListClick = onShopListClick
         )
+    }
+}
+
+@Composable
+private fun CreateShopListButton(
+    onIntent: (HomeScreenIntent) -> Unit
+) {
+    FloatingActionButton(
+        onClick = {
+//            onIntent(HomeScreenIntent.CreateShopListIntent())
+        }
+    ) {
+
     }
 }
 

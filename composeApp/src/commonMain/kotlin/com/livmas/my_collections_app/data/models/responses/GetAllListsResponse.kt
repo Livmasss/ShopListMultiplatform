@@ -5,7 +5,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class GetAllListsResponseBody (
+data class GetAllListsResponse (
     @SerialName("shop_list")
     val shopList: List<ListInfoDTO>
 )

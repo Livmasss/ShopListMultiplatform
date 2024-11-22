@@ -1,7 +1,10 @@
 package com.livmas.my_collections_app.presentation.screens.home
 
 import com.livmas.my_collections_app.data.KtorClient
-import com.livmas.my_collections_app.domain.repositories.ListRepository
+import com.livmas.my_collections_app.domain.repositories.ShopListRepository
+import com.livmas.my_collections_app.domain.usecases.CreateShopListUseCase
+import com.livmas.my_collections_app.domain.usecases.GetShopListsUseCase
+import com.livmas.my_collections_app.mappers.toDomain
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -10,7 +13,8 @@ import kotlinx.coroutines.launch
 
 
 class HomeViewModel(
-    private val listRepository: ListRepository
+    private val getShopListsUseCase: GetShopListsUseCase,
+    private val createShopListUseCase: CreateShopListUseCase
 ): ViewModel() {
     private val _uiState: MutableStateFlow<HomeScreenState> = MutableStateFlow(HomeScreenState())
     val uiState = _uiState.asStateFlow()
@@ -21,7 +25,7 @@ class HomeViewModel(
 
     fun initiateData() {
         viewModelScope.launch {
-            listRepository.getLists().collectLatest { lists ->
+            getShopListsUseCase.execute().collectLatest { lists ->
                 _uiState.value = lists.generateHomeScreenState()
             }
         }
@@ -34,6 +38,10 @@ class HomeViewModel(
     }
 
     private fun createShopList(intent: HomeScreenIntent.CreateShopListIntent) {
-
+        viewModelScope.launch {
+            createShopListUseCase.execute(
+                intent.info.toDomain()
+            )
+        }
     }
 }
