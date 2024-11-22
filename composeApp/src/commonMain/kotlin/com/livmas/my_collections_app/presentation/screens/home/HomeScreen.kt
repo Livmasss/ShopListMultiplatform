@@ -1,8 +1,11 @@
 package com.livmas.my_collections_app.presentation.screens.home
 
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.livmas.my_collections_app.presentation.theme.ShopListsTheme
 import com.livmas.my_collections_app.utils.ScreenState
@@ -12,26 +15,32 @@ import org.koin.compose.koinInject
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = koinInject(),
-    navigateToListScreen: (ListInfoModel) -> Unit
+    onShopListClick: (ShopListInfoModel) -> Unit
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         viewModel.initiateData()
     }
-
-    AllLists(
-        collections = state.lists,
-        onCollectionClick = navigateToListScreen
+    HomeFrame(
+        state = state,
+        onIntent = { viewModel.onIntent(it) },
+        onShopListClick = onShopListClick
     )
 }
 
 @Composable
 private fun HomeFrame(
-    state: HomeScreenState
+    state: HomeScreenState,
+    onIntent: (HomeScreenIntent) -> Unit,
+    onShopListClick: (ShopListInfoModel) -> Unit
 ) {
-    AllLists(state.lists) {
-
+    Scaffold {
+        AllShopLists(
+            modifier = Modifier.padding(it),
+            shopLists =  state.lists,
+            onShopListClick = onShopListClick
+        )
     }
 }
 
@@ -43,20 +52,21 @@ private fun HomeScreenPreview() {
             HomeScreenState(
                 ScreenState.SUCCESS,
                 listOf(
-                    ListInfoModel(
+                    ShopListInfoModel(
                         id = 0,
                         name = "Collection 1"
                     ),
-                    ListInfoModel(
+                    ShopListInfoModel(
                         id = 2,
                         name = "Collection 2"
                     ),
-                    ListInfoModel(
+                    ShopListInfoModel(
                         id = 3,
                         name = "Collection 3"
                     )
                 )
-            )
-        )
+            ),
+            onIntent = {}
+        ) {}
     }
 }

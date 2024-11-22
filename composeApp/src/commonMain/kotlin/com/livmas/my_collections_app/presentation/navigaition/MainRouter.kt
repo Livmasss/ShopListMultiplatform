@@ -6,7 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.livmas.my_collections_app.presentation.screens.home.HomeScreen
-import com.livmas.my_collections_app.presentation.screens.home.ListInfoModel
+import com.livmas.my_collections_app.presentation.screens.home.ShopListInfoModel
 import com.livmas.my_collections_app.presentation.screens.shop_list.ShopListScreen
 import kotlin.reflect.typeOf
 
@@ -25,7 +25,7 @@ fun MainRouter() {
         }
         composable<MainDest.ShopList>(
             typeMap = mapOf(
-                typeOf<ListInfoModel>() to CustomNavType.ListInfoNavType
+                typeOf<ShopListInfoModel>() to CustomNavType.ListInfoNavType
             )
         ) { navBackStackEntry ->
             val route: MainDest.ShopList = navBackStackEntry.toRoute()

@@ -9,13 +9,13 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
-import com.livmas.my_collections_app.presentation.screens.home.ListInfoModel
+import com.livmas.my_collections_app.presentation.screens.home.ShopListInfoModel
 import com.livmas.my_collections_app.presentation.theme.spacing
 
 @Composable
 internal fun ShopListScreenTopBar(
     modifier: Modifier = Modifier,
-    collectionInfo: ListInfoModel
+    collectionInfo: ShopListInfoModel
 ) {
     TopAppBar(
         modifier = modifier,
@@ -27,7 +27,7 @@ internal fun ShopListScreenTopBar(
 
 @Composable
 internal fun ShopListMainInfoWidget(
-    collectionInfo: ListInfoModel,
+    collectionInfo: ShopListInfoModel,
     leadingIcon: (@Composable () -> Unit)? = null,
     trailingIcon: (@Composable () -> Unit)? = null,
 ) {

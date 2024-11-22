@@ -6,23 +6,23 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.livmas.my_collections_app.presentation.screens.home.ListInfoModel
+import com.livmas.my_collections_app.presentation.screens.home.ShopListInfoModel
 
 @Composable
 fun ShopListScreen(
-    listInfoModel: ListInfoModel
+    shopListInfoModel: ShopListInfoModel
 ) {
-    ShopListFrame(listInfoModel)
+    ShopListFrame(shopListInfoModel)
 }
 
 @Composable
 private fun ShopListFrame(
-    listInfoModel: ListInfoModel
+    shopListInfoModel: ShopListInfoModel
 ) {
     Scaffold {
         ShopListScreenContent(
             Modifier.padding(it),
-            listInfoModel
+            shopListInfoModel
         )
     }
 }
@@ -30,9 +30,9 @@ private fun ShopListFrame(
 @Composable
 private fun ShopListScreenContent(
     modifier: Modifier = Modifier,
-    listInfoModel: ListInfoModel
+    shopListInfoModel: ShopListInfoModel
 ) {
     Column(modifier) {
-        Text(listInfoModel.name)
+        Text(shopListInfoModel.name)
     }
 }

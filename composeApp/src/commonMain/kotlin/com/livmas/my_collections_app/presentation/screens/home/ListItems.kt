@@ -16,18 +16,20 @@ import com.livmas.my_collections_app.presentation.widgets.PositionNumberPrefix
 
 
 @Composable
-fun AllLists(
-    collections: List<ListInfoModel>,
-    onCollectionClick: (ListInfoModel) -> Unit
+fun AllShopLists(
+    modifier: Modifier = Modifier,
+    shopLists: List<ShopListInfoModel>,
+    onShopListClick: (ShopListInfoModel) -> Unit
 ) {
     LazyColumn(
-        Modifier.fillMaxWidth()
+        Modifier.then(modifier)
+            .fillMaxWidth()
     ) {
         items(
-            count = collections.size,
-            key = { collections[it].id }
+            count = shopLists.size,
+            key = { shopLists[it].id }
         ) { index ->
-            val collection = collections[index]
+            val collection = shopLists[index]
 
             if (index > 0)
                 Divider(
@@ -36,9 +38,9 @@ fun AllLists(
                     )
                 )
 
-            ListInfoWidget(
+            ShopListInfoWidget(
                 Modifier.clickable {
-                    onCollectionClick(collection)
+                    onShopListClick(collection)
                 }
                     .padding(
                         horizontal = MaterialTheme.spacing.screenPadding,
@@ -52,9 +54,9 @@ fun AllLists(
 }
 
 @Composable
-private fun ListInfoWidget(
+private fun ShopListInfoWidget(
     modifier: Modifier = Modifier,
-    model: ListInfoModel,
+    model: ShopListInfoModel,
     prefix: @Composable (() -> Unit)? = null
 ) {
     ItemWidget(

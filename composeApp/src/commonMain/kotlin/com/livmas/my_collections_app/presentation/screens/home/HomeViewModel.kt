@@ -26,4 +26,14 @@ class HomeViewModel(
             }
         }
     }
+
+    fun onIntent(intent: HomeScreenIntent) {
+        when (intent) {
+            is HomeScreenIntent.CreateShopListIntent -> createShopList(intent)
+        }
+    }
+
+    private fun createShopList(intent: HomeScreenIntent.CreateShopListIntent) {
+
+    }
 }
