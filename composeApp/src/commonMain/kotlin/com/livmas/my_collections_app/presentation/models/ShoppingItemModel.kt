@@ -1,6 +1,6 @@
 package com.livmas.my_collections_app.presentation.models
 
-data class ListItemModel(
+data class ShoppingItemModel(
     val id: Long,
     val text: String,
     val count: Int,

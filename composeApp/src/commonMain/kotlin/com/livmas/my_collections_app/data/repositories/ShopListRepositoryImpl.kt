@@ -3,7 +3,9 @@ package com.livmas.my_collections_app.data.repositories
 import com.livmas.my_collections_app.data.data_sources.ListRemoteDataSource
 import com.livmas.my_collections_app.data.data_sources.UserRemoteDataSource
 import com.livmas.my_collections_app.data.models.requests.CreateListRequest
+import com.livmas.my_collections_app.data.models.requests.GetListContentRequest
 import com.livmas.my_collections_app.domain.models.ShopListInfo
+import com.livmas.my_collections_app.domain.models.ShoppingItem
 import com.livmas.my_collections_app.domain.repositories.ShopListRepository
 import com.livmas.my_collections_app.mappers.toDomain
 import com.livmas.my_collections_app.utils.Resource
@@ -55,5 +57,24 @@ class ShopListRepositoryImpl(
 
     override suspend fun deleteList(shopListInfo: ShopListInfo): ResourceFlow<ShopListInfo> {
         TODO("Not yet implemented")
+    }
+
+    override suspend fun getListContent(listId: Long): ResourceFlow<List<ShoppingItem>> {
+        return flow {
+            emit(Resource.Loading)
+
+            try {
+                val key = userRemoteDataSource.getUserKey()
+                val result = listRemoteDataSource.getListContent(key, GetListContentRequest(listId))
+
+                if (!result.success)
+                    throw Throwable(message = "Not success: $result")
+
+                emit(Resource.Success(result.items.map { it.toDomain() }))
+            }
+            catch (t: Throwable) {
+                emit(Resource.Error(t))
+            }
+        }
     }
 }
