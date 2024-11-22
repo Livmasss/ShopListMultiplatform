@@ -2,7 +2,7 @@ package com.livmas.my_collections_app.presentation.navigaition
 
 import androidx.core.bundle.Bundle
 import androidx.navigation.NavType
-import com.livmas.my_collections_app.presentation.screens.home.ShopListInfoModel
+import com.livmas.my_collections_app.presentation.models.ShopListInfoModel
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 

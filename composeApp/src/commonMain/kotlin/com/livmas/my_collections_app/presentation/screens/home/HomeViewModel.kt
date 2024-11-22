@@ -1,14 +1,17 @@
 package com.livmas.my_collections_app.presentation.screens.home
 
 import com.livmas.my_collections_app.data.KtorClient
-import com.livmas.my_collections_app.domain.repositories.ShopListRepository
+import com.livmas.my_collections_app.domain.models.ShopListInfo
 import com.livmas.my_collections_app.domain.usecases.CreateShopListUseCase
 import com.livmas.my_collections_app.domain.usecases.GetShopListsUseCase
-import com.livmas.my_collections_app.mappers.toDomain
+import com.livmas.my_collections_app.mappers.toPresentation
+import com.livmas.my_collections_app.utils.Resource
+import com.livmas.my_collections_app.utils.toScreenState
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 
@@ -40,8 +43,21 @@ class HomeViewModel(
     private fun createShopList(intent: HomeScreenIntent.CreateShopListIntent) {
         viewModelScope.launch {
             createShopListUseCase.execute(
-                intent.info.toDomain()
-            )
+                ShopListInfo(
+                    id = 0,
+                    name = intent.state.name
+                )
+            ).collectLatest { resource ->
+                if (resource !is Resource.Success)
+                    return@collectLatest
+
+                _uiState.update { currentState ->
+                    HomeScreenState(
+                        screenState = resource.toScreenState(),
+                        lists = currentState.lists + resource.data.toPresentation()
+                    )
+                }
+            }
         }
     }
 }

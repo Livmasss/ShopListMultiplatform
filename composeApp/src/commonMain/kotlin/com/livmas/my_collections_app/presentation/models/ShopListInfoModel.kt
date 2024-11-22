@@ -1,4 +1,4 @@
-package com.livmas.my_collections_app.presentation.screens.home
+package com.livmas.my_collections_app.presentation.models
 
 import kotlinx.serialization.Serializable
 

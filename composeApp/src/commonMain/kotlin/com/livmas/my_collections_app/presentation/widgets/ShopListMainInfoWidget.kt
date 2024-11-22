@@ -9,7 +9,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
-import com.livmas.my_collections_app.presentation.screens.home.ShopListInfoModel
+import com.livmas.my_collections_app.presentation.models.ShopListInfoModel
 import com.livmas.my_collections_app.presentation.theme.spacing
 
 @Composable

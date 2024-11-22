@@ -1,19 +1,20 @@
 package com.livmas.my_collections_app.presentation.screens.home
 
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.ExtendedFloatingActionButton
 import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.key.Key.Companion.R
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.livmas.my_collections_app.presentation.models.ShopListInfoModel
+import com.livmas.my_collections_app.presentation.screens.home.create_list.CreateShopListDialog
 import com.livmas.my_collections_app.presentation.theme.ShopListsTheme
 import com.livmas.my_collections_app.utils.ScreenState
-import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 
@@ -40,9 +41,13 @@ private fun HomeFrame(
     onIntent: (HomeScreenIntent) -> Unit,
     onShopListClick: (ShopListInfoModel) -> Unit
 ) {
+    var showCreateListDialog by rememberSaveable { mutableStateOf(false) }
+
     Scaffold(
         floatingActionButton = {
-            CreateShopListButton(onIntent)
+            CreateShopListButton {
+                showCreateListDialog = true
+            }
         }
     ) {
         AllShopLists(
@@ -51,16 +56,22 @@ private fun HomeFrame(
             onShopListClick = onShopListClick
         )
     }
+
+    if (showCreateListDialog)
+        CreateShopListDialog(
+            onDismissRequest =  {
+                showCreateListDialog = false
+            },
+            onIntent = onIntent
+        )
 }
 
 @Composable
 private fun CreateShopListButton(
-    onIntent: (HomeScreenIntent) -> Unit
+    onClick: () -> Unit
 ) {
     FloatingActionButton(
-        onClick = {
-//            onIntent(HomeScreenIntent.CreateShopListIntent())
-        }
+        onClick = onClick
     ) {
 
     }

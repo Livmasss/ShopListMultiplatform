@@ -3,7 +3,7 @@ package com.livmas.my_collections_app.data.repositories
 import com.livmas.my_collections_app.data.data_sources.ListRemoteDataSource
 import com.livmas.my_collections_app.data.data_sources.UserRemoteDataSource
 import com.livmas.my_collections_app.data.models.requests.CreateListRequest
-import com.livmas.my_collections_app.domain.models.ListInfo
+import com.livmas.my_collections_app.domain.models.ShopListInfo
 import com.livmas.my_collections_app.domain.repositories.ShopListRepository
 import com.livmas.my_collections_app.mappers.toDomain
 import com.livmas.my_collections_app.utils.Resource
@@ -14,7 +14,7 @@ class ShopListRepositoryImpl(
     private val listRemoteDataSource: ListRemoteDataSource,
     private val userRemoteDataSource: UserRemoteDataSource,
 ): ShopListRepository {
-    override suspend fun getLists(): ResourceFlow<List<ListInfo>> {
+    override suspend fun getLists(): ResourceFlow<List<ShopListInfo>> {
         return flow {
             emit(Resource.Loading)
             try {
@@ -32,20 +32,20 @@ class ShopListRepositoryImpl(
         }
     }
 
-    override suspend fun createList(listInfo: ListInfo): ResourceFlow<ListInfo> {
+    override suspend fun createList(shopListInfo: ShopListInfo): ResourceFlow<ShopListInfo> {
         return flow {
             emit(Resource.Loading)
             try {
                 val key = userRemoteDataSource.getUserKey()
                 val result = listRemoteDataSource.createList(
                     authKey = key,
-                    request = CreateListRequest(listInfo.name)
+                    request = CreateListRequest(shopListInfo.name)
                 )
 
                 if (!result.success)
-                    throw Throwable(message = "Now success: $result")
+                    throw Throwable(message = "Not success: $result")
 
-                emit(Resource.Success(listInfo))
+                emit(Resource.Success(shopListInfo))
             }
             catch (t: Throwable) {
                 emit(Resource.Error(t))
@@ -53,7 +53,7 @@ class ShopListRepositoryImpl(
         }
     }
 
-    override suspend fun deleteList(listInfo: ListInfo): ResourceFlow<ListInfo> {
+    override suspend fun deleteList(shopListInfo: ShopListInfo): ResourceFlow<ShopListInfo> {
         TODO("Not yet implemented")
     }
 }

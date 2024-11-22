@@ -6,7 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.livmas.my_collections_app.presentation.screens.home.HomeScreen
-import com.livmas.my_collections_app.presentation.screens.home.ShopListInfoModel
+import com.livmas.my_collections_app.presentation.models.ShopListInfoModel
 import com.livmas.my_collections_app.presentation.screens.shop_list.ShopListScreen
 import kotlin.reflect.typeOf
 

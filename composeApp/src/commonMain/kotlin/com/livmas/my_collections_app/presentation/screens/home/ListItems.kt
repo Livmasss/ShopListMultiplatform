@@ -10,6 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
+import com.livmas.my_collections_app.presentation.models.ShopListInfoModel
 import com.livmas.my_collections_app.presentation.theme.spacing
 import com.livmas.my_collections_app.presentation.widgets.ItemWidget
 import com.livmas.my_collections_app.presentation.widgets.PositionNumberPrefix

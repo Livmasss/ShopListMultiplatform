@@ -13,7 +13,7 @@ class ListRemoteDataSource {
         return response.body<GetAllListsResponse>()
     }
     suspend fun createList(authKey: String, request: CreateListRequest): CreateListResponse {
-        val response = KtorClient.client.post("GetAllMyShopLists?key=$authKey&name=${request.name}")
+        val response = KtorClient.client.post("CreateShoppingList?key=$authKey&name=${request.name}")
         return response.body<CreateListResponse>()
     }
 }
