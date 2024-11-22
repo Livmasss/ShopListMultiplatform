@@ -5,25 +5,38 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.livmas.my_collections_app.presentation.models.ShopListInfoModel
+import org.koin.compose.koinInject
 
 @Composable
 fun ShopListScreen(
-    shopListInfoModel: ShopListInfoModel
+    shopListInfoModel: ShopListInfoModel,
+    viewModel: ShopListViewModel = koinInject()
 ) {
-    ShopListFrame(shopListInfoModel)
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        viewModel.initiateData(shopListInfoModel)
+    }
+
+    ShopListFrame(state)
 }
 
 @Composable
 private fun ShopListFrame(
-    shopListInfoModel: ShopListInfoModel
+    uiState: ShopListScreenState
 ) {
     Scaffold {
-        ShopListScreenContent(
-            Modifier.padding(it),
-            shopListInfoModel
-        )
+        uiState.listInfoModel?.let { listInfo ->
+            ShopListScreenContent(
+                modifier = Modifier.padding(it),
+                shopListInfoModel = listInfo
+            )
+        }
     }
 }
 

@@ -7,6 +7,7 @@ import com.livmas.my_collections_app.domain.repositories.ShopListRepository
 import com.livmas.my_collections_app.domain.usecases.CreateShopListUseCase
 import com.livmas.my_collections_app.domain.usecases.GetShopListsUseCase
 import com.livmas.my_collections_app.presentation.screens.home.HomeViewModel
+import com.livmas.my_collections_app.presentation.screens.shop_list.ShopListViewModel
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
@@ -21,5 +22,9 @@ fun appModule() = module {
 
     viewModelDefinition {
         HomeViewModel(get(), get())
+    }
+
+    viewModelDefinition {
+        ShopListViewModel()
     }
 }
