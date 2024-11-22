@@ -57,6 +57,7 @@ class HomeViewModel(
                         lists = currentState.lists + resource.data.toPresentation()
                     )
                 }
+                intent.onSuccess()
             }
         }
     }

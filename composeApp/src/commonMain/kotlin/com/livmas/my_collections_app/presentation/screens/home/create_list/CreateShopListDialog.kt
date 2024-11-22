@@ -18,6 +18,7 @@ import com.livmas.my_collections_app.presentation.screens.home.HomeScreenIntent
 import com.livmas.my_collections_app.presentation.theme.spacing
 import mycollectionsapp.composeapp.generated.resources.Res
 import mycollectionsapp.composeapp.generated.resources.label_create
+import mycollectionsapp.composeapp.generated.resources.label_name
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -40,12 +41,14 @@ fun CreateShopListDialog(
                     value = uiState.name,
                     onValueChange = { value ->
                         uiState = uiState.copy(name = value)
-                    }
+                    },
+                    label = { Text(stringResource(Res.string.label_name)) }
                 )
                 Button(
                     onClick = {
                         onIntent(HomeScreenIntent.CreateShopListIntent(
-                            state = uiState
+                            state = uiState,
+                            onSuccess = onDismissRequest
                         ))
                     }
                 ) {
