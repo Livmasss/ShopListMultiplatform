@@ -19,9 +19,7 @@ internal fun ItemWidget(
     postfix: @Composable (RowScope.() -> Unit)? = null,
     decoration: @Composable (() -> Unit)? = null
 ) {
-    Surface(
-        modifier,
-    ) {
+    Surface(modifier) {
         decoration?.invoke()
         Row(
             verticalAlignment = Alignment.CenterVertically

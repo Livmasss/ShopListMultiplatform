@@ -29,9 +29,9 @@ import kotlin.math.roundToInt
 fun SwipeToRevealItemWidget(
     modifier: Modifier = Modifier,
     isRevealed: Boolean,
-    actions: @Composable RowScope.() -> Unit,
     onExpanded: () -> Unit = {},
     onCollapsed: () -> Unit = {},
+    actions: @Composable RowScope.() -> Unit,
     content: @Composable RowScope.() -> Unit,
     prefix: @Composable (RowScope.() -> Unit)? = null,
     postfix: @Composable (RowScope.() -> Unit)? = null,
@@ -69,8 +69,7 @@ fun SwipeToRevealItemWidget(
         }
 
         ItemWidget(
-            modifier = Modifier
-                .fillMaxSize()
+            modifier = Modifier.fillMaxSize()
                 .offset { IntOffset(offset.value.roundToInt(), 0) }
                 .pointerInput(contextMenuWidth) {
                     detectHorizontalDragGestures(

@@ -28,6 +28,7 @@ fun ShopListScreen(
     viewModel: ShopListViewModel = koinInject()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val onIntent: (ShopListScreenIntent) -> Unit = { viewModel.onIntent(it) }
 
     LaunchedEffect(Unit) {
         viewModel.initiateData(shopListInfoModel)
@@ -35,6 +36,7 @@ fun ShopListScreen(
 
     ShopListFrame(
         uiState = state,
+        onIntent = onIntent,
         onBackClick = onBackClick
     )
 }
@@ -42,6 +44,7 @@ fun ShopListScreen(
 @Composable
 private fun ShopListFrame(
     uiState: ShopListScreenState,
+    onIntent: (ShopListScreenIntent) -> Unit,
     onBackClick: () -> Unit
 ) {
     AsyncLoadingScaffold(
@@ -58,7 +61,8 @@ private fun ShopListFrame(
         ShopListScreenContent(
             modifier = Modifier.padding(it)
                 .padding(MaterialTheme.spacing.screenPadding),
-            state = uiState
+            state = uiState,
+            onIntent = onIntent
         )
     }
 }
@@ -88,11 +92,13 @@ private fun ShopListScreenTopBar(
 @Composable
 private fun ShopListScreenContent(
     modifier: Modifier = Modifier,
-    state: ShopListScreenState
+    state: ShopListScreenState,
+    onIntent: (ShopListScreenIntent) -> Unit
 ) {
     Column(modifier) {
         ShoppingItemsList(
-            shopItems = state.listContent
+            shopItems = state.listContent,
+            onIntent = onIntent
         )
     }
 }

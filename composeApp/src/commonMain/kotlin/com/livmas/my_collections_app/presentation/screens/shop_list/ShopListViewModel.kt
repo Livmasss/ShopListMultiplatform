@@ -49,4 +49,8 @@ class ShopListViewModel(
             )
         }
     }
+
+    fun onIntent(intent: ShopListScreenIntent) {
+
+    }
 }

@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -13,15 +14,22 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.livmas.my_collections_app.presentation.models.ShoppingItemModel
+import com.livmas.my_collections_app.presentation.models.RevealedActionModel
+import com.livmas.my_collections_app.presentation.widgets.RevealedActionWidget
 import com.livmas.my_collections_app.presentation.widgets.SwipeToRevealItemWidget
+import mycollectionsapp.composeapp.generated.resources.Res
+import mycollectionsapp.composeapp.generated.resources.ic_cross_out
+import mycollectionsapp.composeapp.generated.resources.ic_delete
 
 @Composable
 fun ShoppingItemsList(
     modifier: Modifier = Modifier,
-    shopItems: List<ShoppingItemModel>
+    shopItems: List<ShoppingItemModel>,
+    onIntent: (ShopListScreenIntent) -> Unit
 ) {
     LazyColumn(modifier) {
         items(
@@ -31,8 +39,13 @@ fun ShoppingItemsList(
             }
         ) { index ->
             val model = shopItems[index]
+
+            if (index > 0)
+                Divider()
+
             ShoppingItemWidget(
-                model = model
+                model = model,
+                onIntent = onIntent
             )
         }
     }
@@ -41,16 +54,27 @@ fun ShoppingItemsList(
 @Composable
 private fun ShoppingItemWidget(
     modifier: Modifier = Modifier,
-    model: ShoppingItemModel
+    model: ShoppingItemModel,
+    onIntent: (ShopListScreenIntent) -> Unit
 ) {
     var isRevealed by rememberSaveable { mutableStateOf(false) }
 
     SwipeToRevealItemWidget(
+        modifier = Modifier.then(modifier)
+            .height(50.dp),
         isRevealed = isRevealed,
-        actions = { Text("Penis") },
         onExpanded = { isRevealed = true },
         onCollapsed = { isRevealed = false },
-        modifier = modifier,
+        actions = {
+            getActionModels(
+                model = model,
+                onIntent = onIntent
+            ).forEach {
+                RevealedActionWidget(
+                    actionModel = it
+                )
+            }
+        },
         content = {
             Text(
                 modifier = Modifier.weight(1f),
@@ -77,3 +101,26 @@ private fun ShoppingItemWidget(
         }
     )
 }
+
+@Composable
+private fun getActionModels(
+    model: ShoppingItemModel,
+    onIntent: (ShopListScreenIntent) -> Unit
+) = listOf(
+    RevealedActionModel(
+        backgroundColor = Color.Red,
+        foregroundColor = MaterialTheme.colors.surface,
+        iconDrawable = Res.drawable.ic_delete,
+        action = {
+            onIntent(ShopListScreenIntent.CrossItemOut(model))
+        }
+    ),
+    RevealedActionModel(
+        backgroundColor = Color.Black,
+        foregroundColor = MaterialTheme.colors.surface,
+        iconDrawable = Res.drawable.ic_cross_out,
+        action = {
+            onIntent(ShopListScreenIntent.CrossItemOut(model))
+        }
+    ),
+)
