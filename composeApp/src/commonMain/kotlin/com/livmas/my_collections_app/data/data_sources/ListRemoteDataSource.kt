@@ -10,10 +10,11 @@ import io.ktor.client.call.body
 import io.ktor.client.request.post
 
 class ListRemoteDataSource {
-    suspend fun fetchLists(authKey: String): GetAllListsResponse {
+    suspend fun getLists(authKey: String): GetAllListsResponse {
         val response = KtorClient.client.post("GetAllMyShopLists?key=$authKey")
         return response.body<GetAllListsResponse>()
     }
+
     suspend fun createList(authKey: String, request: CreateListRequest): CreateListResponse {
         val response = KtorClient.client.post("CreateShoppingList?key=$authKey&name=${request.name}")
         return response.body<CreateListResponse>()

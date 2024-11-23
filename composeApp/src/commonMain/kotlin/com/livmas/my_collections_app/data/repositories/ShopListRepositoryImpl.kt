@@ -21,7 +21,7 @@ class ShopListRepositoryImpl(
             emit(Resource.Loading)
             try {
                 val key = userRemoteDataSource.getUserKey()
-                val result = listRemoteDataSource.fetchLists(key).shopList.map {
+                val result = listRemoteDataSource.getLists(key).shopList.map {
                     it.toDomain()
                 }
 
@@ -55,7 +55,7 @@ class ShopListRepositoryImpl(
         }
     }
 
-    override suspend fun deleteList(shopListInfo: ShopListInfo): ResourceFlow<ShopListInfo> {
+    override suspend fun deleteList(shopListInfo: ShopListInfo): ResourceFlow<Unit> {
         TODO("Not yet implemented")
     }
 

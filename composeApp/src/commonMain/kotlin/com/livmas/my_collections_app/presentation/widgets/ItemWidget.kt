@@ -20,7 +20,6 @@ internal fun ItemWidget(
     decoration: @Composable (() -> Unit)? = null
 ) {
     Surface(modifier) {
-        decoration?.invoke()
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -36,5 +35,6 @@ internal fun ItemWidget(
                 postfix()
             }
         }
+        decoration?.invoke()
     }
 }

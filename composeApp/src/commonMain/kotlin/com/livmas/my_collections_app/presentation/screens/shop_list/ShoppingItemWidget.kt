@@ -2,6 +2,7 @@ package com.livmas.my_collections_app.presentation.screens.shop_list
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
@@ -13,12 +14,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.livmas.my_collections_app.presentation.models.ShoppingItemModel
 import com.livmas.my_collections_app.presentation.models.RevealedActionModel
+import com.livmas.my_collections_app.presentation.models.ShoppingItemModel
 import com.livmas.my_collections_app.presentation.widgets.RevealedActionWidget
 import com.livmas.my_collections_app.presentation.widgets.SwipeToRevealItemWidget
 import mycollectionsapp.composeapp.generated.resources.Res
@@ -94,10 +96,16 @@ private fun ShoppingItemWidget(
         decoration = {
             if (model.isCrossed)
                 Box(
-                    Modifier.height(1.dp)
-                        .fillMaxWidth()
-                        .background(color = MaterialTheme.colors.onSurface)
-                )
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Box(
+                        Modifier
+                            .fillMaxWidth()
+                            .height(1.dp)
+                            .background(Color.Black)
+                    )
+                }
         }
     )
 }
