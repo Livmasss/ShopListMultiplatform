@@ -5,9 +5,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -15,6 +13,9 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.livmas.my_collections_app.presentation.models.ShopListInfoModel
 import com.livmas.my_collections_app.presentation.theme.spacing
+import com.livmas.my_collections_app.presentation.widgets.AsyncLoadingScaffold
+import com.livmas.my_collections_app.presentation.widgets.BackgroundedTopAppBar
+import com.livmas.my_collections_app.utils.ScreenState
 import mycollectionsapp.composeapp.generated.resources.Res
 import mycollectionsapp.composeapp.generated.resources.ic_back
 import org.jetbrains.compose.resources.painterResource
@@ -43,7 +44,8 @@ private fun ShopListFrame(
     uiState: ShopListScreenState,
     onBackClick: () -> Unit
 ) {
-    Scaffold(
+    AsyncLoadingScaffold(
+        loading = uiState.screenState == ScreenState.LOADING,
         topBar = {
             uiState.listInfoModel?.let {
                 ShopListScreenTopBar(
@@ -66,7 +68,7 @@ private fun ShopListScreenTopBar(
     shopListInfoModel: ShopListInfoModel,
     onBackClick: () -> Unit
 ) {
-    TopAppBar(
+    BackgroundedTopAppBar(
         navigationIcon = {
             IconButton(
                 onClick = onBackClick
@@ -80,7 +82,6 @@ private fun ShopListScreenTopBar(
         title = {
             Text(shopListInfoModel.name)
         },
-        backgroundColor = MaterialTheme.colors.background
     )
 }
 

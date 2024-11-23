@@ -30,7 +30,7 @@ fun AllShopLists(
             count = shopLists.size,
             key = { shopLists[it].id }
         ) { index ->
-            val collection = shopLists[index]
+            val listInfo = shopLists[index]
 
             if (index > 0)
                 Divider(
@@ -41,13 +41,13 @@ fun AllShopLists(
 
             ShopListInfoWidget(
                 Modifier.clickable {
-                    onShopListClick(collection)
+                    onShopListClick(listInfo)
                 }
                     .padding(
                         horizontal = MaterialTheme.spacing.screenPadding,
                         vertical = MaterialTheme.spacing.smallSpacing
                     ),
-                model = collection,
+                model = listInfo,
                 prefix = { PositionNumberPrefix(index) }
             )
         }
