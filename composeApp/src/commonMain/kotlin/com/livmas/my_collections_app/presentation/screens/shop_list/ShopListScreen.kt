@@ -27,7 +27,7 @@ fun ShopListScreen(
     onBackClick: () -> Unit,
     viewModel: ShopListViewModel = koinInject()
 ) {
-    val state by viewModel.state.collectAsStateWithLifecycle()
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
     val onIntent: (ShopListScreenIntent) -> Unit = { viewModel.onIntent(it) }
 
     LaunchedEffect(Unit) {

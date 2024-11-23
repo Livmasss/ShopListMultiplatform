@@ -54,3 +54,12 @@ fun ShoppingItem.toPresentation(): ShoppingItemModel {
         isCrossed = isCrossed
     )
 }
+
+fun ShoppingItemModel.toDomain(): ShoppingItem {
+    return ShoppingItem(
+        id = id,
+        text = text,
+        count = count,
+        isCrossed = isCrossed
+    )
+}

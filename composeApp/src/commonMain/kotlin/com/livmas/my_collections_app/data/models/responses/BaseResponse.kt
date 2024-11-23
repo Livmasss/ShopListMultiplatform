@@ -4,9 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CreateListResponse (
+abstract class BaseResponse {
     @SerialName("success")
-    override val success: Boolean,
-    @SerialName("list_id")
-    val listId: Long
-): BaseResponse()
+    abstract val success: Boolean
+}

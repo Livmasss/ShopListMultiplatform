@@ -120,7 +120,7 @@ private fun getActionModels(
         foregroundColor = MaterialTheme.colors.surface,
         iconDrawable = Res.drawable.ic_delete,
         action = {
-            onIntent(ShopListScreenIntent.CrossItemOut(model))
+            onIntent(ShopListScreenIntent.DeleteItem(model))
         }
     ),
     RevealedActionModel(

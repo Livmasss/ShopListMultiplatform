@@ -3,6 +3,8 @@ package com.livmas.my_collections_app.data.repositories
 import com.livmas.my_collections_app.data.data_sources.ListRemoteDataSource
 import com.livmas.my_collections_app.data.data_sources.UserRemoteDataSource
 import com.livmas.my_collections_app.data.models.requests.CreateListRequest
+import com.livmas.my_collections_app.data.models.requests.CrossItemOutRequest
+import com.livmas.my_collections_app.data.models.requests.DeleteListItemRequest
 import com.livmas.my_collections_app.data.models.requests.GetListContentRequest
 import com.livmas.my_collections_app.domain.models.ShopListInfo
 import com.livmas.my_collections_app.domain.models.ShoppingItem
@@ -15,7 +17,7 @@ import kotlinx.coroutines.flow.flow
 class ShopListRepositoryImpl(
     private val listRemoteDataSource: ListRemoteDataSource,
     private val userRemoteDataSource: UserRemoteDataSource,
-): ShopListRepository {
+): ShopListRepository, BaseAuthorizedRepository(userRemoteDataSource) {
     override suspend fun getLists(): ResourceFlow<List<ShopListInfo>> {
         return flow {
             emit(Resource.Loading)
@@ -75,6 +77,43 @@ class ShopListRepositoryImpl(
             catch (t: Throwable) {
                 emit(Resource.Error(t))
             }
+        }
+    }
+
+    override suspend fun deleteListItem(listId: Long, itemId: Long): ResourceFlow<Unit> {
+        return flow {
+            emit(Resource.Loading)
+            try {
+                val result = listRemoteDataSource.deleteListItem(
+                    authKey = userRemoteDataSource.getUserKey(),
+                    request = DeleteListItemRequest(
+                        listId, itemId
+                    )
+                )
+
+                if (!result.success)
+                    throw Throwable(message = "Not success: $result")
+
+                emit(Resource.Success(Unit))
+            }
+            catch (t: Throwable) {
+                emit(Resource.Error(t))
+            }
+        }
+    }
+
+    override suspend fun crossOutListItem(listId: Long, item: ShoppingItem): ResourceFlow<Boolean> {
+        return fetchAuthorized {
+            val result = listRemoteDataSource.crossItemOut(
+                authKey = userRemoteDataSource.getUserKey(),
+                request = CrossItemOutRequest(
+                    listId, item.id
+                )
+            )
+
+            if (result.success)
+                return@fetchAuthorized !item.isCrossed
+            throw IllegalStateException("Not success")
         }
     }
 }
