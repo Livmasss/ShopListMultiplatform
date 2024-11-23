@@ -8,11 +8,15 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.livmas.my_collections_app.presentation.models.ShoppingItemModel
-import com.livmas.my_collections_app.presentation.widgets.ItemWidget
+import com.livmas.my_collections_app.presentation.widgets.SwipeToRevealItemWidget
 
 @Composable
 fun ShoppingItemsList(
@@ -39,7 +43,13 @@ private fun ShoppingItemWidget(
     modifier: Modifier = Modifier,
     model: ShoppingItemModel
 ) {
-    ItemWidget(
+    var isRevealed by rememberSaveable { mutableStateOf(false) }
+
+    SwipeToRevealItemWidget(
+        isRevealed = isRevealed,
+        actions = { Text("Penis") },
+        onExpanded = { isRevealed = true },
+        onCollapsed = { isRevealed = false },
         modifier = modifier,
         content = {
             Text(

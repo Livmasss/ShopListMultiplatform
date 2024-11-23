@@ -1,11 +1,11 @@
 package com.livmas.my_collections_app.presentation.widgets
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,10 +19,11 @@ internal fun ItemWidget(
     postfix: @Composable (RowScope.() -> Unit)? = null,
     decoration: @Composable (() -> Unit)? = null
 ) {
-    Box {
+    Surface(
+        modifier,
+    ) {
         decoration?.invoke()
         Row(
-            modifier = modifier,
             verticalAlignment = Alignment.CenterVertically
         ) {
             prefix?.run {
