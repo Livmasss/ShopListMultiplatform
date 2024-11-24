@@ -2,7 +2,6 @@ package com.livmas.my_collections_app.presentation.screens.shop_list.create_item
 
 import androidx.compose.material.Button
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -10,8 +9,11 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import com.livmas.my_collections_app.presentation.models.ShoppingItemModel
 import com.livmas.my_collections_app.presentation.screens.shop_list.ShopListScreenIntent
+import com.livmas.my_collections_app.presentation.widgets.BaseIntField
+import com.livmas.my_collections_app.presentation.widgets.BaseTextField
 import com.livmas.my_collections_app.utils.BaseDialog
 import mycollectionsapp.composeapp.generated.resources.Res
+import mycollectionsapp.composeapp.generated.resources.label_count
 import mycollectionsapp.composeapp.generated.resources.label_create
 import mycollectionsapp.composeapp.generated.resources.label_name
 import org.jetbrains.compose.resources.stringResource
@@ -28,19 +30,21 @@ fun CreateShoppingItemDialog(
     BaseDialog(
         onDismissRequest = onDismissRequest
     ) {
-        TextField(
+        BaseTextField(
             value = uiState.text,
             onValueChange = { value ->
                 uiState = uiState.copy(text = value)
             },
-            label = { Text(stringResource(Res.string.label_name)) }
+            labelResource = Res.string.label_name
         )
-        TextField(
-            value = uiState.count?.toString() ?: "",
-            onValueChange = { value: String ->
-                uiState = uiState.copy(count = value.toIntOrNull())
+        BaseIntField(
+            value = uiState.count,
+            onValueChange = { value ->
+                uiState = uiState.copy(
+                    count = value
+                )
             },
-            label = { Text(stringResource(Res.string.label_name)) }
+            labelResource = Res.string.label_count
         )
         Button(
             onClick = {
