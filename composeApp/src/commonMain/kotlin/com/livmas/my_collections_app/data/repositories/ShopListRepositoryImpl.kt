@@ -2,6 +2,7 @@ package com.livmas.my_collections_app.data.repositories
 
 import com.livmas.my_collections_app.data.data_sources.ListRemoteDataSource
 import com.livmas.my_collections_app.data.data_sources.UserRemoteDataSource
+import com.livmas.my_collections_app.data.models.requests.CreateListItemRequest
 import com.livmas.my_collections_app.data.models.requests.CreateListRequest
 import com.livmas.my_collections_app.data.models.requests.CrossItemOutRequest
 import com.livmas.my_collections_app.data.models.requests.DeleteListItemRequest
@@ -113,6 +114,25 @@ class ShopListRepositoryImpl(
 
             if (result.success)
                 return@fetchAuthorized !item.isCrossed
+            throw IllegalStateException("Not success")
+        }
+    }
+
+    override suspend fun createListItem(
+        listId: Long,
+        item: ShoppingItem
+    ): ResourceFlow<ShoppingItem> {
+        return fetchAuthorized {
+            val result = listRemoteDataSource.createListItem(it, CreateListItemRequest(
+                listId = listId,
+                text = item.text,
+                count = item.count
+            ))
+
+            if (result.success)
+                return@fetchAuthorized item.copy(
+                    id = result.itemId
+                )
             throw IllegalStateException("Not success")
         }
     }

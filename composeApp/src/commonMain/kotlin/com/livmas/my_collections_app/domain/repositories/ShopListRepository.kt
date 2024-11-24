@@ -12,4 +12,5 @@ interface ShopListRepository {
     suspend fun getListContent(listId: Long): ResourceFlow<List<ShoppingItem>>
     suspend fun deleteListItem(listId: Long, itemId: Long): ResourceFlow<Unit>
     suspend fun crossOutListItem(listId: Long, item: ShoppingItem): ResourceFlow<Boolean>
+    suspend fun createListItem(listId: Long, item: ShoppingItem): ResourceFlow<ShoppingItem>
 }

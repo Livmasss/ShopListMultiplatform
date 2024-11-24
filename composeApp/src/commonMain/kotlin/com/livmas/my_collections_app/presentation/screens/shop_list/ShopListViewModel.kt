@@ -1,6 +1,7 @@
 package com.livmas.my_collections_app.presentation.screens.shop_list
 
 import com.livmas.my_collections_app.domain.models.ShoppingItem
+import com.livmas.my_collections_app.domain.usecases.CreateListItemUseCase
 import com.livmas.my_collections_app.domain.usecases.CrossListItemOutUseCase
 import com.livmas.my_collections_app.domain.usecases.DeleteListItemUseCase
 import com.livmas.my_collections_app.domain.usecases.GetListContentUseCase
@@ -19,6 +20,7 @@ class ShopListViewModel(
     private val getListContentUseCase: GetListContentUseCase,
     private val crossListItemOutUseCase: CrossListItemOutUseCase,
     private val deleteListItemUseCase: DeleteListItemUseCase,
+    private val createListItemUseCase: CreateListItemUseCase,
 ): ViewModel() {
     private val _uiState = MutableStateFlow(ShopListScreenState())
     val uiState = _uiState.asStateFlow()
@@ -39,8 +41,9 @@ class ShopListViewModel(
 
     fun onIntent(intent: ShopListScreenIntent) {
         when(intent) {
-            is ShopListScreenIntent.CrossItemOut -> crossListItemOut(intent)
-            is ShopListScreenIntent.DeleteItem -> deleteListItem(intent)
+            is ShopListScreenIntent.CrossShoppingItemOut -> crossListItemOut(intent)
+            is ShopListScreenIntent.DeleteShoppingItem -> deleteListItem(intent)
+            is ShopListScreenIntent.CreateShoppingItem -> createShopList(intent)
         }
     }
 
@@ -62,7 +65,7 @@ class ShopListViewModel(
         }
     }
 
-    private fun crossListItemOut(intent: ShopListScreenIntent.CrossItemOut) {
+    private fun crossListItemOut(intent: ShopListScreenIntent.CrossShoppingItemOut) {
         viewModelScope.launch {
             uiState.value.listInfoModel?.id?.let {
                 crossListItemOutUseCase.execute(
@@ -88,7 +91,7 @@ class ShopListViewModel(
         }
     }
 
-    private fun deleteListItem(intent: ShopListScreenIntent.DeleteItem) {
+    private fun deleteListItem(intent: ShopListScreenIntent.DeleteShoppingItem) {
         viewModelScope.launch {
             uiState.value.listInfoModel?.id?.let {
                 deleteListItemUseCase.execute(
@@ -108,6 +111,27 @@ class ShopListViewModel(
                         listContent = list
                     )
                 }
+            }
+        }
+    }
+
+    private fun createShopList(intent: ShopListScreenIntent.CreateShoppingItem) {
+        viewModelScope.launch {
+            val info = uiState.value.listInfoModel ?: return@launch
+
+            createListItemUseCase.execute(
+                listId = info.id,
+                item = intent.itemModel.toDomain()
+            ).collectLatest { result ->
+                if(result !is Resource.Success<ShoppingItem>)
+                    return@collectLatest
+
+                val list = uiState.value.listContent.toMutableList()
+                list.add(result.data.toPresentation())
+
+                _uiState.value = _uiState.value.copy(
+                    listContent = list
+                )
             }
         }
     }

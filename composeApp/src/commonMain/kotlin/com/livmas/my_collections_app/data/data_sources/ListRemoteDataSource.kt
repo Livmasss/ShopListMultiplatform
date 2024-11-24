@@ -1,11 +1,12 @@
 package com.livmas.my_collections_app.data.data_sources
 
 import com.livmas.my_collections_app.data.KtorClient
+import com.livmas.my_collections_app.data.models.requests.CreateListItemRequest
 import com.livmas.my_collections_app.data.models.requests.CreateListRequest
 import com.livmas.my_collections_app.data.models.requests.CrossItemOutRequest
 import com.livmas.my_collections_app.data.models.requests.DeleteListItemRequest
 import com.livmas.my_collections_app.data.models.requests.GetListContentRequest
-import com.livmas.my_collections_app.data.models.responses.BaseResponse
+import com.livmas.my_collections_app.data.models.responses.CreateListItemResponse
 import com.livmas.my_collections_app.data.models.responses.CreateListResponse
 import com.livmas.my_collections_app.data.models.responses.CrossItemOutResponse
 import com.livmas.my_collections_app.data.models.responses.DeleteListItemResponse
@@ -38,5 +39,10 @@ class ListRemoteDataSource {
     suspend fun deleteListItem(authKey: String, request: DeleteListItemRequest): DeleteListItemResponse {
         val response = KtorClient.client.post("RemoveFromList?key=$authKey&list_id=${request.listId}&item_id=${request.itemId}")
         return response.body<DeleteListItemResponse>()
+    }
+
+    suspend fun createListItem(authKey: String, request: CreateListItemRequest): CreateListItemResponse {
+        val response = KtorClient.client.post("AddToShoppingList?key=$authKey}&id=${request.listId}&value=${request.text}&n=${request.count}")
+        return response.body<CreateListItemResponse>()
     }
 }
