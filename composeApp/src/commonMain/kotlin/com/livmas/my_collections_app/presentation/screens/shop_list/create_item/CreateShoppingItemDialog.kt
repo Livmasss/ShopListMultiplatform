@@ -1,4 +1,4 @@
-package com.livmas.my_collections_app.presentation.screens.home.create_list
+package com.livmas.my_collections_app.presentation.screens.shop_list.create_item
 
 import androidx.compose.material.Button
 import androidx.compose.material.Text
@@ -8,7 +8,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import com.livmas.my_collections_app.presentation.screens.home.HomeScreenIntent
+import com.livmas.my_collections_app.presentation.models.ShoppingItemModel
+import com.livmas.my_collections_app.presentation.screens.shop_list.ShopListScreenIntent
 import com.livmas.my_collections_app.utils.BaseDialog
 import mycollectionsapp.composeapp.generated.resources.Res
 import mycollectionsapp.composeapp.generated.resources.label_create
@@ -16,28 +17,40 @@ import mycollectionsapp.composeapp.generated.resources.label_name
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun CreateShopListDialog(
+fun CreateShoppingItemDialog(
     onDismissRequest: () -> Unit,
-    onIntent: (HomeScreenIntent) -> Unit
+    onIntent: (ShopListScreenIntent.CreateShoppingItem) -> Unit
 ) {
     var uiState by rememberSaveable(
-        saver = CreateShopListStateSaver()
-    ) { mutableStateOf(CreateShopListState()) }
+        saver = CreateShoppingItemUiStateSaver()
+    ) { mutableStateOf(CreateShoppingItemUiState()) }
 
     BaseDialog(
         onDismissRequest = onDismissRequest
     ) {
         TextField(
-            value = uiState.name,
+            value = uiState.text,
             onValueChange = { value ->
-                uiState = uiState.copy(name = value)
+                uiState = uiState.copy(text = value)
+            },
+            label = { Text(stringResource(Res.string.label_name)) }
+        )
+        TextField(
+            value = uiState.count?.toString() ?: "",
+            onValueChange = { value: String ->
+                uiState = uiState.copy(count = value.toIntOrNull())
             },
             label = { Text(stringResource(Res.string.label_name)) }
         )
         Button(
             onClick = {
-                onIntent(HomeScreenIntent.CreateShopListIntent(
-                    state = uiState,
+                onIntent(ShopListScreenIntent.CreateShoppingItem(
+                    itemModel = ShoppingItemModel(
+                        id = 0,
+                        text = uiState.text,
+                        count = uiState.count ?: 0,
+                        isCrossed = false
+                    ),
                     onSuccess = onDismissRequest
                 ))
             }

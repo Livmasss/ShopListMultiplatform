@@ -4,7 +4,7 @@ import com.livmas.my_collections_app.domain.models.ShoppingItem
 import com.livmas.my_collections_app.domain.repositories.ShopListRepository
 import com.livmas.my_collections_app.utils.ResourceFlow
 
-class CreateListItemUseCase(
+class CreateShoppingItemUseCase(
     private val repository: ShopListRepository
 ) {
     suspend fun execute(listId: Long, item: ShoppingItem): ResourceFlow<ShoppingItem> {

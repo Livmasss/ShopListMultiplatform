@@ -2,6 +2,7 @@ package com.livmas.my_collections_app.presentation.screens.shop_list
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -9,15 +10,20 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.livmas.my_collections_app.presentation.models.ShopListInfoModel
+import com.livmas.my_collections_app.presentation.screens.shop_list.create_item.CreateShoppingItemDialog
 import com.livmas.my_collections_app.presentation.theme.spacing
 import com.livmas.my_collections_app.presentation.widgets.AsyncLoadingScaffold
 import com.livmas.my_collections_app.presentation.widgets.BackgroundedTopAppBar
 import com.livmas.my_collections_app.utils.ScreenState
 import mycollectionsapp.composeapp.generated.resources.Res
 import mycollectionsapp.composeapp.generated.resources.ic_back
+import mycollectionsapp.composeapp.generated.resources.ic_create
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
 
@@ -47,6 +53,18 @@ private fun ShopListFrame(
     onIntent: (ShopListScreenIntent) -> Unit,
     onBackClick: () -> Unit
 ) {
+    var showCreateDialog by rememberSaveable {
+        mutableStateOf(false)
+    }
+
+    if (showCreateDialog)
+        CreateShoppingItemDialog(
+            onDismissRequest = {
+                showCreateDialog = false
+            },
+            onIntent = onIntent
+        )
+
     AsyncLoadingScaffold(
         loading = uiState.screenState == ScreenState.LOADING,
         topBar = {
@@ -55,6 +73,11 @@ private fun ShopListFrame(
                     shopListInfoModel = it,
                     onBackClick = onBackClick
                 )
+            }
+        },
+        floatingActionButton = {
+            CreateShoppingItemFab {
+                showCreateDialog = true
             }
         }
     ) {
@@ -99,6 +122,21 @@ private fun ShopListScreenContent(
         ShoppingItemsList(
             shopItems = state.listContent,
             onIntent = onIntent
+        )
+    }
+}
+
+
+@Composable
+private fun CreateShoppingItemFab(
+    onClick: () -> Unit
+) {
+    FloatingActionButton(
+        onClick = onClick
+    ) {
+        Icon(
+            painter = painterResource(Res.drawable.ic_create),
+            contentDescription = null
         )
     }
 }

@@ -12,6 +12,7 @@ sealed interface ShopListScreenIntent {
     ): ShopListScreenIntent
 
     data class CreateShoppingItem(
-        val itemModel: ShoppingItemModel
+        val itemModel: ShoppingItemModel,
+        val onSuccess: () -> Unit
     ): ShopListScreenIntent
 }

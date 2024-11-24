@@ -1,7 +1,7 @@
 package com.livmas.my_collections_app.presentation.screens.shop_list
 
 import com.livmas.my_collections_app.domain.models.ShoppingItem
-import com.livmas.my_collections_app.domain.usecases.CreateListItemUseCase
+import com.livmas.my_collections_app.domain.usecases.CreateShoppingItemUseCase
 import com.livmas.my_collections_app.domain.usecases.CrossListItemOutUseCase
 import com.livmas.my_collections_app.domain.usecases.DeleteListItemUseCase
 import com.livmas.my_collections_app.domain.usecases.GetListContentUseCase
@@ -20,7 +20,7 @@ class ShopListViewModel(
     private val getListContentUseCase: GetListContentUseCase,
     private val crossListItemOutUseCase: CrossListItemOutUseCase,
     private val deleteListItemUseCase: DeleteListItemUseCase,
-    private val createListItemUseCase: CreateListItemUseCase,
+    private val createShoppingItemUseCase: CreateShoppingItemUseCase,
 ): ViewModel() {
     private val _uiState = MutableStateFlow(ShopListScreenState())
     val uiState = _uiState.asStateFlow()
@@ -119,7 +119,7 @@ class ShopListViewModel(
         viewModelScope.launch {
             val info = uiState.value.listInfoModel ?: return@launch
 
-            createListItemUseCase.execute(
+            createShoppingItemUseCase.execute(
                 listId = info.id,
                 item = intent.itemModel.toDomain()
             ).collectLatest { result ->
@@ -132,6 +132,7 @@ class ShopListViewModel(
                 _uiState.value = _uiState.value.copy(
                     listContent = list
                 )
+                intent.onSuccess()
             }
         }
     }

@@ -4,6 +4,7 @@ import com.livmas.my_collections_app.data.data_sources.ListRemoteDataSource
 import com.livmas.my_collections_app.data.data_sources.UserRemoteDataSource
 import com.livmas.my_collections_app.data.repositories.ShopListRepositoryImpl
 import com.livmas.my_collections_app.domain.repositories.ShopListRepository
+import com.livmas.my_collections_app.domain.usecases.CreateShoppingItemUseCase
 import com.livmas.my_collections_app.domain.usecases.CreateShopListUseCase
 import com.livmas.my_collections_app.domain.usecases.CrossListItemOutUseCase
 import com.livmas.my_collections_app.domain.usecases.DeleteListItemUseCase
@@ -25,11 +26,12 @@ fun appModule() = module {
     singleOf(::GetListContentUseCase)
     singleOf(::DeleteListItemUseCase)
     singleOf(::CrossListItemOutUseCase)
+    singleOf(::CreateShoppingItemUseCase)
 
     viewModelDefinition {
         HomeViewModel(get(), get())
     }
     viewModelDefinition {
-        ShopListViewModel(get(), get(), get())
+        ShopListViewModel(get(), get(), get(), get())
     }
 }
