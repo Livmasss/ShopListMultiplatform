@@ -8,6 +8,6 @@ class GetShopListsUseCase(
     private val repository: ShopListRepository
 ) {
     suspend fun execute(): ResourceFlow<List<ShopListInfo>> {
-        return repository.getLists()
+        return repository.getShopLists()
     }
 }

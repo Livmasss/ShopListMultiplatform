@@ -119,7 +119,7 @@ private fun getActionModels(
         backgroundColor = Color.Red,
         foregroundColor = MaterialTheme.colors.surface,
         iconDrawable = Res.drawable.ic_delete,
-        action = {
+        callback = {
             onIntent(ShopListScreenIntent.DeleteShoppingItem(model))
         }
     ),
@@ -127,7 +127,7 @@ private fun getActionModels(
         backgroundColor = Color.Black,
         foregroundColor = MaterialTheme.colors.surface,
         iconDrawable = Res.drawable.ic_cross_out,
-        action = {
+        callback = {
             onIntent(ShopListScreenIntent.CrossShoppingItemOut(model))
         }
     ),

@@ -1,10 +1,20 @@
 package com.livmas.my_collections_app.data.repositories
 
+import com.livmas.my_collections_app.data.models.responses.BaseResponse
 import com.livmas.my_collections_app.utils.Resource
 import com.livmas.my_collections_app.utils.ResourceFlow
 import kotlinx.coroutines.flow.flow
 
 abstract class BaseRepository {
+    suspend fun <T: BaseResponse> fetchResponse(dataProvider: suspend () -> T): ResourceFlow<T> {
+        return fetchData {
+            val result = dataProvider()
+
+            if (!result.success)
+                throw Throwable(message = "Not success: $result")
+            result
+        }
+    }
     suspend fun <T> fetchData(dataProvider: suspend () -> T): ResourceFlow<T> {
         return flow {
             emit(Resource.Loading)

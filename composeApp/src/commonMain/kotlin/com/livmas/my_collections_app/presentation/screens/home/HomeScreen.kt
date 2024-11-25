@@ -94,7 +94,10 @@ private fun HomeScreenContent(
     AllShopLists(
         modifier = modifier,
         shopLists = state.lists,
-        onShopListClick = onShopListClick
+        onShopListClick = onShopListClick,
+        onDismiss = {
+            onIntent(HomeScreenIntent.DeleteShopListIntent(it))
+        }
     )
 
     if (showCreateListDialog)

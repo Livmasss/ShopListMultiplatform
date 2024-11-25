@@ -3,7 +3,9 @@ package com.livmas.my_collections_app.presentation.screens.home
 import com.livmas.my_collections_app.data.KtorClient
 import com.livmas.my_collections_app.domain.models.ShopListInfo
 import com.livmas.my_collections_app.domain.usecases.CreateShopListUseCase
+import com.livmas.my_collections_app.domain.usecases.DeleteShopListUseCase
 import com.livmas.my_collections_app.domain.usecases.GetShopListsUseCase
+import com.livmas.my_collections_app.mappers.toDomain
 import com.livmas.my_collections_app.mappers.toPresentation
 import com.livmas.my_collections_app.utils.Resource
 import com.livmas.my_collections_app.utils.toScreenState
@@ -17,7 +19,8 @@ import kotlinx.coroutines.launch
 
 class HomeViewModel(
     private val getShopListsUseCase: GetShopListsUseCase,
-    private val createShopListUseCase: CreateShopListUseCase
+    private val createShopListUseCase: CreateShopListUseCase,
+    private val deleteShopListUseCase: DeleteShopListUseCase,
 ): ViewModel() {
     private val _uiState: MutableStateFlow<HomeScreenState> = MutableStateFlow(HomeScreenState())
     val uiState = _uiState.asStateFlow()
@@ -37,6 +40,25 @@ class HomeViewModel(
     fun onIntent(intent: HomeScreenIntent) {
         when (intent) {
             is HomeScreenIntent.CreateShopListIntent -> createShopList(intent)
+            is HomeScreenIntent.DeleteShopListIntent -> deleteShopList(intent)
+        }
+    }
+
+    private fun deleteShopList(intent: HomeScreenIntent.DeleteShopListIntent) {
+        viewModelScope.launch {
+            deleteShopListUseCase.execute(
+                intent.model.toDomain()
+            ).collectLatest { resource ->
+                if (resource !is Resource.Success)
+                    return@collectLatest
+
+                _uiState.update { currentState ->
+                    HomeScreenState(
+                        screenState = resource.toScreenState(),
+                        lists = currentState.lists - intent.model
+                    )
+                }
+            }
         }
     }
 
@@ -61,4 +83,8 @@ class HomeViewModel(
             }
         }
     }
+}
+
+fun HomeScreenState.handleNotSuccess() {
+
 }

@@ -5,25 +5,32 @@ import com.livmas.my_collections_app.data.models.requests.CreateListItemRequest
 import com.livmas.my_collections_app.data.models.requests.CreateListRequest
 import com.livmas.my_collections_app.data.models.requests.CrossItemOutRequest
 import com.livmas.my_collections_app.data.models.requests.DeleteListItemRequest
+import com.livmas.my_collections_app.data.models.requests.DeleteListRequest
 import com.livmas.my_collections_app.data.models.requests.GetListContentRequest
 import com.livmas.my_collections_app.data.models.responses.CreateListItemResponse
 import com.livmas.my_collections_app.data.models.responses.CreateListResponse
 import com.livmas.my_collections_app.data.models.responses.CrossItemOutResponse
 import com.livmas.my_collections_app.data.models.responses.DeleteListItemResponse
+import com.livmas.my_collections_app.data.models.responses.DeleteShopListResponse
 import com.livmas.my_collections_app.data.models.responses.GetAllListsResponse
 import com.livmas.my_collections_app.data.models.responses.GetListContentResponse
 import io.ktor.client.call.body
 import io.ktor.client.request.post
 
 class ListRemoteDataSource {
-    suspend fun getLists(authKey: String): GetAllListsResponse {
+    suspend fun getShopLists(authKey: String): GetAllListsResponse {
         val response = KtorClient.client.post("GetAllMyShopLists?key=$authKey")
         return response.body<GetAllListsResponse>()
     }
 
-    suspend fun createList(authKey: String, request: CreateListRequest): CreateListResponse {
+    suspend fun createShopList(authKey: String, request: CreateListRequest): CreateListResponse {
         val response = KtorClient.client.post("CreateShoppingList?key=$authKey&name=${request.name}")
         return response.body<CreateListResponse>()
+    }
+
+    suspend fun deleteShopList(authKey: String, request: DeleteListRequest): DeleteShopListResponse {
+        val response = KtorClient.client.post( "RemoveShoppingList?key=$authKey&list_id=${request.listId}")
+        return response.body<DeleteShopListResponse>()
     }
 
     suspend fun getListContent(authKey: String, request: GetListContentRequest): GetListContentResponse {
@@ -42,7 +49,7 @@ class ListRemoteDataSource {
     }
 
     suspend fun createListItem(authKey: String, request: CreateListItemRequest): CreateListItemResponse {
-        val response = KtorClient.client.post("AddToShoppingList?key=$authKey}&id=${request.listId}&value=${request.text}&n=${request.count}")
+        val response = KtorClient.client.post("AddToShoppingList?key=$authKey&id=${request.listId}&value=${request.text}&n=${request.count}")
         return response.body<CreateListItemResponse>()
     }
 }

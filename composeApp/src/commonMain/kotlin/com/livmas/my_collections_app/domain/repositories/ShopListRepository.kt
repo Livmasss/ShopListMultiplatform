@@ -1,13 +1,14 @@
 package com.livmas.my_collections_app.domain.repositories
 
+import com.livmas.my_collections_app.data.models.responses.BaseResponse
 import com.livmas.my_collections_app.domain.models.ShopListInfo
 import com.livmas.my_collections_app.domain.models.ShoppingItem
 import com.livmas.my_collections_app.utils.ResourceFlow
 
 interface ShopListRepository {
-    suspend fun getLists(): ResourceFlow<List<ShopListInfo>>
-    suspend fun createList(shopListInfo: ShopListInfo): ResourceFlow<ShopListInfo>
-    suspend fun deleteList(shopListInfo: ShopListInfo): ResourceFlow<Unit>
+    suspend fun getShopLists(): ResourceFlow<List<ShopListInfo>>
+    suspend fun createShopList(shopListInfo: ShopListInfo): ResourceFlow<ShopListInfo>
+    suspend fun deleteShopList(shopListInfo: ShopListInfo): ResourceFlow<BaseResponse>
 
     suspend fun getListContent(listId: Long): ResourceFlow<List<ShoppingItem>>
     suspend fun deleteListItem(listId: Long, itemId: Long): ResourceFlow<Unit>

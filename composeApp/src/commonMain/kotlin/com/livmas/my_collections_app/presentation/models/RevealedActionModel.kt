@@ -7,5 +7,5 @@ data class RevealedActionModel(
     val backgroundColor: Color,
     val foregroundColor: Color,
     val iconDrawable: DrawableResource,
-    val action: () -> Unit
+    val callback: () -> Unit
 )

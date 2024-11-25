@@ -22,7 +22,7 @@ fun RevealedActionWidget(
     Box(
         modifier = Modifier.then(modifier)
             .background(actionModel.backgroundColor)
-            .clickable { actionModel.action() }
+            .clickable { actionModel.callback() }
             .padding(MaterialTheme.spacing.smallSpacing)
     ) {
         Icon(
