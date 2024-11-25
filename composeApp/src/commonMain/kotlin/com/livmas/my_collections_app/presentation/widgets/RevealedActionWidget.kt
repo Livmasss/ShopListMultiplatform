@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.livmas.my_collections_app.presentation.models.RevealedActionModel
 import com.livmas.my_collections_app.presentation.theme.spacing
@@ -23,7 +24,8 @@ fun RevealedActionWidget(
         modifier = Modifier.then(modifier)
             .background(actionModel.backgroundColor)
             .clickable { actionModel.callback() }
-            .padding(MaterialTheme.spacing.smallSpacing)
+            .padding(MaterialTheme.spacing.smallSpacing),
+        contentAlignment = Alignment.Center
     ) {
         Icon(
             modifier = Modifier.fillMaxHeight()

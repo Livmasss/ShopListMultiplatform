@@ -49,8 +49,10 @@ class HomeViewModel(
             deleteShopListUseCase.execute(
                 intent.model.toDomain()
             ).collectLatest { resource ->
-                if (resource !is Resource.Success)
+                if (resource !is Resource.Success) {
+                    resource.handleScreenState()
                     return@collectLatest
+                }
 
                 _uiState.update { currentState ->
                     HomeScreenState(
@@ -70,8 +72,10 @@ class HomeViewModel(
                     name = intent.state.name
                 )
             ).collectLatest { resource ->
-                if (resource !is Resource.Success)
+                if (resource !is Resource.Success) {
+                    resource.handleScreenState()
                     return@collectLatest
+                }
 
                 _uiState.update { currentState ->
                     HomeScreenState(
@@ -83,8 +87,21 @@ class HomeViewModel(
             }
         }
     }
-}
 
-fun HomeScreenState.handleNotSuccess() {
 
+    private fun Resource<*>.handleScreenState() {
+        val screenState = toScreenState()
+        _uiState.update {
+            if (this is Resource.Error)
+                it.copy(
+                    screenState = screenState,
+                    error = throwable.message.orEmpty()
+                )
+            else
+                it.copy(
+                    screenState = screenState,
+                    error = ""
+                )
+        }
+    }
 }

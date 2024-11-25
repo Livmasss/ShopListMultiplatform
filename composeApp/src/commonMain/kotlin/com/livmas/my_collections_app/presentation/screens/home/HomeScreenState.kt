@@ -8,7 +8,8 @@ import com.livmas.my_collections_app.utils.ScreenState
 
 data class HomeScreenState (
     val screenState: ScreenState = ScreenState.LOADING,
-    val lists: List<ShopListInfoModel> = listOf()
+    val lists: List<ShopListInfoModel> = listOf(),
+    val error: String = ""
 )
 
 fun Resource<List<ShopListInfo>>.generateHomeScreenState(): HomeScreenState {
@@ -20,7 +21,8 @@ fun Resource<List<ShopListInfo>>.generateHomeScreenState(): HomeScreenState {
 
         is Resource.Error -> HomeScreenState(
             screenState = ScreenState.ERROR,
-            lists = listOf()
+            lists = listOf(),
+            error = throwable.message.orEmpty()
         )
 
         is Resource.Loading -> HomeScreenState(

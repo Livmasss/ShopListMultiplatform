@@ -1,13 +1,17 @@
 package com.livmas.my_collections_app.presentation.screens.home
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
+import androidx.compose.material.SnackbarHost
+import androidx.compose.material.SnackbarHostState
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -33,13 +37,11 @@ fun HomeScreen(
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(Unit) {
-        viewModel.initiateData()
-    }
     HomeFrame(
         state = state,
         onIntent = { viewModel.onIntent(it) },
-        onShopListClick = onShopListClick
+        onShopListClick = onShopListClick,
+        refreshData = viewModel::initiateData
     )
 }
 
@@ -47,14 +49,25 @@ fun HomeScreen(
 private fun HomeFrame(
     state: HomeScreenState,
     onIntent: (HomeScreenIntent) -> Unit,
-    onShopListClick: (ShopListInfoModel) -> Unit
+    onShopListClick: (ShopListInfoModel) -> Unit,
+    refreshData: () -> Unit
 ) {
+    val snackbarHostState = remember { SnackbarHostState() }
     var showCreateListDialog by rememberSaveable { mutableStateOf(false) }
+
+    LaunchedEffect(state.screenState) {
+        if (state.screenState == ScreenState.ERROR)
+            snackbarHostState.showSnackbar(message = state.error)
+    }
 
     AsyncLoadingScaffold (
         loading = state.screenState == ScreenState.LOADING,
+        onLoad = refreshData,
         topBar = {
             HomeScreenAppBar()
+        },
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
         },
         floatingActionButton = {
             CreateShopListButton {
@@ -63,7 +76,8 @@ private fun HomeFrame(
         }
     ) {
         HomeScreenContent(
-            modifier = Modifier.padding(it),
+            modifier = Modifier.padding(it)
+                .fillMaxSize(),
             state = state,
             onIntent = onIntent,
             onShopListClick = onShopListClick,
@@ -145,7 +159,8 @@ private fun HomeScreenPreview() {
                     )
                 )
             ),
-            onIntent = {}
+            onIntent = {},
+            onShopListClick = {}
         ) {}
     }
 }

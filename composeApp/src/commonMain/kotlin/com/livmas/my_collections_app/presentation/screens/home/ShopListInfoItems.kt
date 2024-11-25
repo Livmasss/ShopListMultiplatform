@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
@@ -81,8 +82,7 @@ private fun ShopListInfoWidget(
     }
 
     SwipeToRevealItemWidget(
-        modifier = Modifier.then(modifier)
-            .height(50.dp),
+        modifier = Modifier.then(modifier),
         content = {
             Text(
                 modifier = Modifier.weight(1f),
@@ -98,6 +98,9 @@ private fun ShopListInfoWidget(
         prefix = { prefix?.invoke() },
         actions = {
             RevealedActionWidget(
+                modifier = Modifier
+                    .height(40.dp)
+                    .width(70.dp),
                 actionModel = RevealedActionModel(
                     backgroundColor = Color.Red,
                     foregroundColor = MaterialTheme.colors.onSurface,

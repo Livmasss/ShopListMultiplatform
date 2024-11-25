@@ -1,6 +1,7 @@
 package com.livmas.my_collections_app.presentation.screens.shop_list
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
@@ -8,7 +9,6 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -36,14 +36,13 @@ fun ShopListScreen(
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val onIntent: (ShopListScreenIntent) -> Unit = { viewModel.onIntent(it) }
 
-    LaunchedEffect(Unit) {
-        viewModel.initiateData(shopListInfoModel)
-    }
-
     ShopListFrame(
         uiState = state,
         onIntent = onIntent,
-        onBackClick = onBackClick
+        onBackClick = onBackClick,
+        onLoad = {
+            viewModel.initiateData(shopListInfoModel)
+        }
     )
 }
 
@@ -51,7 +50,8 @@ fun ShopListScreen(
 private fun ShopListFrame(
     uiState: ShopListScreenState,
     onIntent: (ShopListScreenIntent) -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onLoad: () -> Unit
 ) {
     var showCreateDialog by rememberSaveable {
         mutableStateOf(false)
@@ -67,6 +67,7 @@ private fun ShopListFrame(
 
     AsyncLoadingScaffold(
         loading = uiState.screenState == ScreenState.LOADING,
+        onLoad = onLoad,
         topBar = {
             uiState.listInfoModel?.let {
                 ShopListScreenTopBar(
@@ -118,8 +119,9 @@ private fun ShopListScreenContent(
     state: ShopListScreenState,
     onIntent: (ShopListScreenIntent) -> Unit
 ) {
-    Column(modifier) {
+    Box(modifier) {
         ShoppingItemsList(
+            modifier = Modifier.fillMaxSize(),
             shopItems = state.listContent,
             onIntent = onIntent
         )
