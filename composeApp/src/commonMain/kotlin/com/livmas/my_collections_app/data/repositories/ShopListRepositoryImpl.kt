@@ -1,7 +1,5 @@
 package com.livmas.my_collections_app.data.repositories
 
-import com.livmas.my_collections_app.data.data_sources.ListRemoteDataSource
-import com.livmas.my_collections_app.data.data_sources.UserRemoteDataSource
 import com.livmas.my_collections_app.data.models.requests.CreateListItemRequest
 import com.livmas.my_collections_app.data.models.requests.CreateListRequest
 import com.livmas.my_collections_app.data.models.requests.CrossItemOutRequest
@@ -9,16 +7,18 @@ import com.livmas.my_collections_app.data.models.requests.DeleteListItemRequest
 import com.livmas.my_collections_app.data.models.requests.DeleteListRequest
 import com.livmas.my_collections_app.data.models.requests.GetListContentRequest
 import com.livmas.my_collections_app.data.models.responses.BaseResponse
+import com.livmas.my_collections_app.data.remote.data_sources.ListRemoteDataSource
 import com.livmas.my_collections_app.domain.models.ShopListInfo
 import com.livmas.my_collections_app.domain.models.ShoppingItem
 import com.livmas.my_collections_app.domain.repositories.ShopListRepository
+import com.livmas.my_collections_app.domain.repositories.UserRepository
 import com.livmas.my_collections_app.mappers.toDomain
 import com.livmas.my_collections_app.utils.ResourceFlow
 
 class ShopListRepositoryImpl(
     private val listRemoteDataSource: ListRemoteDataSource,
-    private val userRemoteDataSource: UserRemoteDataSource,
-): ShopListRepository, BaseAuthorizedRepository(userRemoteDataSource) {
+    private val userRepository: UserRepository,
+): ShopListRepository, BaseAuthorizedRepository(userRepository) {
     override suspend fun getShopLists(): ResourceFlow<List<ShopListInfo>> {
         return fetchAuthorized { authKey ->
             val response = listRemoteDataSource.getShopLists(authKey)
@@ -66,7 +66,7 @@ class ShopListRepositoryImpl(
     override suspend fun deleteListItem(listId: Long, itemId: Long): ResourceFlow<Unit> {
         return fetchAuthorized {
             val result = listRemoteDataSource.deleteListItem(
-                authKey = userRemoteDataSource.getUserKey(),
+                authKey = userRepository.getUserKey(),
                 request = DeleteListItemRequest(
                     listId, itemId
                 )
@@ -79,7 +79,7 @@ class ShopListRepositoryImpl(
     override suspend fun crossOutListItem(listId: Long, item: ShoppingItem): ResourceFlow<Boolean> {
         return fetchAuthorized {
             listRemoteDataSource.crossItemOut(
-                authKey = userRemoteDataSource.getUserKey(),
+                authKey = userRepository.getUserKey(),
                 request = CrossItemOutRequest(
                     listId, item.id
                 )

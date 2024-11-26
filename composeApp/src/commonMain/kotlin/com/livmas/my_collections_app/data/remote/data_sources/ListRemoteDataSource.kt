@@ -1,6 +1,5 @@
-package com.livmas.my_collections_app.data.data_sources
+package com.livmas.my_collections_app.data.remote.data_sources
 
-import com.livmas.my_collections_app.data.KtorClient
 import com.livmas.my_collections_app.data.models.requests.CreateListItemRequest
 import com.livmas.my_collections_app.data.models.requests.CreateListRequest
 import com.livmas.my_collections_app.data.models.requests.CrossItemOutRequest

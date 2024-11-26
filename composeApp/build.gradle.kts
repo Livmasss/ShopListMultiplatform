@@ -68,6 +68,9 @@ kotlin {
             implementation(libs.kodein.di.compose)
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
+
+            implementation(libs.atomicfu)
+            implementation(libs.datastore.preferences)
         }
     }
 }

@@ -21,9 +21,11 @@ ktor = "2.3.6"
 moko-mvvm = "0.16.1"
 kamel = "0.8.3"
 kodeinDiCompose = "7.22.0"
-koin = "3.4.3"
-koin-compose = "1.0.4"
+koin = "4.0.0"
 slf4j = "1.7.30"
+
+datastore = "1.1.1"
+atomicfu = "0.23.2"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -54,9 +56,14 @@ kamel = { module = "media.kamel:kamel-image", version.ref = "kamel" }
 kodein-di-compose = { module = "org.kodein.di:kodein-di-framework-compose", version.ref = "kodeinDiCompose" }
 slf4j-log4j12 = { module = "org.slf4j:slf4j-log4j12", version.ref="slf4j"}
 
+#Koin DI
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
-koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin-compose"}
+koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin"}
+
+#DataStore
+datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
+atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "atomicfu" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
