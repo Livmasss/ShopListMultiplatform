@@ -17,7 +17,7 @@ import com.livmas.my_collections_app.utils.ResourceFlow
 
 class ShopListRepositoryImpl(
     private val listRemoteDataSource: ListRemoteDataSource,
-    private val userRepository: UserRepository,
+    userRepository: UserRepository,
 ): ShopListRepository, BaseAuthorizedRepository(userRepository) {
     override suspend fun getShopLists(): ResourceFlow<List<ShopListInfo>> {
         return fetchAuthorized { authKey ->
@@ -64,9 +64,9 @@ class ShopListRepositoryImpl(
     }
 
     override suspend fun deleteListItem(listId: Long, itemId: Long): ResourceFlow<Unit> {
-        return fetchAuthorized {
+        return fetchAuthorized { authKey ->
             val result = listRemoteDataSource.deleteListItem(
-                authKey = userRepository.getUserKey(),
+                authKey = authKey,
                 request = DeleteListItemRequest(
                     listId, itemId
                 )
@@ -77,9 +77,9 @@ class ShopListRepositoryImpl(
     }
 
     override suspend fun crossOutListItem(listId: Long, item: ShoppingItem): ResourceFlow<Boolean> {
-        return fetchAuthorized {
+        return fetchAuthorized { authKey ->
             listRemoteDataSource.crossItemOut(
-                authKey = userRepository.getUserKey(),
+                authKey = authKey,
                 request = CrossItemOutRequest(
                     listId, item.id
                 )

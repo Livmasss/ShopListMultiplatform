@@ -1,5 +1,6 @@
 package com.livmas.my_collections_app.data.repositories
 
+import co.touchlab.kermit.Logger
 import com.livmas.my_collections_app.data.models.responses.BaseResponse
 import com.livmas.my_collections_app.utils.Resource
 import com.livmas.my_collections_app.utils.ResourceFlow
@@ -25,7 +26,7 @@ abstract class BaseRepository {
                 emit(Resource.Success(result))
             }
             catch (t: Throwable) {
-                println(t.stackTraceToString())
+                Logger.e(t) { "Some error occurred while fetchData" }
                 emit(Resource.Error(t))
             }
         }
