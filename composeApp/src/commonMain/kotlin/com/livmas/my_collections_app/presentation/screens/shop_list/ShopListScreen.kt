@@ -9,6 +9,7 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -36,13 +37,14 @@ fun ShopListScreen(
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val onIntent: (ShopListScreenIntent) -> Unit = { viewModel.onIntent(it) }
 
+    LaunchedEffect(Unit) {
+        viewModel.initiateData(shopListInfoModel)
+    }
+
     ShopListFrame(
         uiState = state,
         onIntent = onIntent,
-        onBackClick = onBackClick,
-        onLoad = {
-            viewModel.initiateData(shopListInfoModel)
-        }
+        onBackClick = onBackClick
     )
 }
 
@@ -50,8 +52,7 @@ fun ShopListScreen(
 private fun ShopListFrame(
     uiState: ShopListScreenState,
     onIntent: (ShopListScreenIntent) -> Unit,
-    onBackClick: () -> Unit,
-    onLoad: () -> Unit
+    onBackClick: () -> Unit
 ) {
     var showCreateDialog by rememberSaveable {
         mutableStateOf(false)
@@ -67,7 +68,7 @@ private fun ShopListFrame(
 
     AsyncLoadingScaffold(
         loading = uiState.screenState == ScreenState.LOADING,
-        onLoad = onLoad,
+        onRefresh = { onIntent(ShopListScreenIntent.RefreshScreen) },
         topBar = {
             uiState.listInfoModel?.let {
                 ShopListScreenTopBar(

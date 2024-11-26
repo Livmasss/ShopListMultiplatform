@@ -18,7 +18,6 @@ import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment.Companion.TopCenter
 import androidx.compose.ui.Modifier
@@ -32,7 +31,7 @@ import kotlinx.coroutines.launch
 fun AsyncLoadingScaffold(
     modifier: Modifier = Modifier,
     loading: Boolean = false,
-    onLoad: () -> Unit = {},
+    onRefresh: () -> Unit = {},
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     topBar: @Composable () -> Unit = {},
     bottomBar: @Composable () -> Unit = {},
@@ -53,15 +52,11 @@ fun AsyncLoadingScaffold(
 ) {
     val scope = rememberCoroutineScope()
 
-    LaunchedEffect(Unit) {
-        onLoad()
-    }
-
     val pullState = rememberPullRefreshState(
         refreshing = loading,
         onRefresh = {
             scope.launch {
-                onLoad()
+                onRefresh()
             }
         },
     )

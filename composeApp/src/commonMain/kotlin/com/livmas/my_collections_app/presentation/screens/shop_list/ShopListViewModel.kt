@@ -11,10 +11,13 @@ import com.livmas.my_collections_app.presentation.models.ShopListInfoModel
 import com.livmas.my_collections_app.utils.Resource
 import com.livmas.my_collections_app.utils.ScreenState
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ShopListViewModel(
     private val getListContentUseCase: GetListContentUseCase,
@@ -32,11 +35,8 @@ class ShopListViewModel(
                 listInfoModel = listInfo,
                 listContent = listOf()
             )
-
-            getListContentUseCase.execute(listInfo.id).collectLatest {
-                _uiState.value = it.handleInitialResource()
-            }
         }
+        refreshScreen()
     }
 
     fun onIntent(intent: ShopListScreenIntent) {
@@ -44,6 +44,7 @@ class ShopListViewModel(
             is ShopListScreenIntent.CrossShoppingItemOut -> crossListItemOut(intent)
             is ShopListScreenIntent.DeleteShoppingItem -> deleteListItem(intent)
             is ShopListScreenIntent.CreateShoppingItem -> createShopList(intent)
+            is ShopListScreenIntent.RefreshScreen -> refreshScreen()
         }
     }
 
@@ -133,6 +134,18 @@ class ShopListViewModel(
                     listContent = list
                 )
                 intent.onSuccess()
+            }
+        }
+    }
+
+    private fun refreshScreen() {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                uiState.value.listInfoModel?.let { info ->
+                    getListContentUseCase.execute(info.id).collectLatest {
+                        _uiState.value = it.handleInitialResource()
+                    }
+                }
             }
         }
     }

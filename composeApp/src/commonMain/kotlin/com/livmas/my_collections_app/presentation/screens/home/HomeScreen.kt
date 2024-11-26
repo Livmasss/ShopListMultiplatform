@@ -37,11 +37,14 @@ fun HomeScreen(
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
+    LaunchedEffect(Unit) {
+        viewModel.initiateData()
+    }
+
     HomeFrame(
         state = state,
         onIntent = { viewModel.onIntent(it) },
-        onShopListClick = onShopListClick,
-        refreshData = viewModel::initiateData
+        onShopListClick = onShopListClick
     )
 }
 
@@ -50,7 +53,6 @@ private fun HomeFrame(
     state: HomeScreenState,
     onIntent: (HomeScreenIntent) -> Unit,
     onShopListClick: (ShopListInfoModel) -> Unit,
-    refreshData: () -> Unit
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     var showCreateListDialog by rememberSaveable { mutableStateOf(false) }
@@ -62,7 +64,7 @@ private fun HomeFrame(
 
     AsyncLoadingScaffold (
         loading = state.screenState == ScreenState.LOADING,
-        onLoad = refreshData,
+        onRefresh = { onIntent(HomeScreenIntent.RefreshScreen) },
         topBar = {
             HomeScreenAppBar()
         },
@@ -161,6 +163,6 @@ private fun HomeScreenPreview() {
             ),
             onIntent = {},
             onShopListClick = {}
-        ) {}
+        )
     }
 }

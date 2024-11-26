@@ -15,4 +15,6 @@ sealed interface ShopListScreenIntent {
         val itemModel: ShoppingItemModel,
         val onSuccess: () -> Unit
     ): ShopListScreenIntent
+
+    data object RefreshScreen : ShopListScreenIntent
 }

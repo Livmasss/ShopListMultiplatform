@@ -12,4 +12,6 @@ sealed interface HomeScreenIntent {
     data class DeleteShopListIntent(
         val model: ShopListInfoModel
     ): HomeScreenIntent
+
+    data object RefreshScreen: HomeScreenIntent
 }
