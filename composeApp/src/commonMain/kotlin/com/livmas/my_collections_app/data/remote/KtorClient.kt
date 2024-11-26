@@ -1,5 +1,6 @@
 package com.livmas.my_collections_app.data.remote
 
+import com.livmas.my_collections_app.BuildKonfig
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -12,7 +13,8 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
 object KtorClient {
-    private const val BASE_URL = "https://cyberprot.ru/shopping/v2/"
+    private val BASE_URL = BuildKonfig.BASE_URL
+
     val client: HttpClient = HttpClient {
         defaultRequest {
             url(BASE_URL)

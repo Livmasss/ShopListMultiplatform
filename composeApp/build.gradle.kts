@@ -1,5 +1,7 @@
+import com.codingfeline.buildkonfig.compiler.FieldSpec
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -8,6 +10,7 @@ plugins {
     alias(libs.plugins.composeCompiler)
 
     alias(libs.plugins.kotlinxSerialization)
+    alias(libs.plugins.buildkonfig)
 }
 
 kotlin {
@@ -15,6 +18,17 @@ kotlin {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_17)
+        }
+    }
+
+    buildkonfig {
+        packageName = "com.livmas.my_collections_app"
+
+        val properties = Properties()
+        properties.load(project.rootProject.file("local.properties").inputStream())
+
+        defaultConfigs {
+            buildConfigField(FieldSpec.Type.STRING, "BASE_URL", properties.getProperty("BASE_URL"))
         }
     }
     
