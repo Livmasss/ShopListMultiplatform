@@ -11,8 +11,6 @@ abstract class BaseRepository {
         return fetchData {
             val result = dataProvider()
 
-            if (!result.success)
-                throw Throwable(message = "Not success: $result")
             result
         }
     }

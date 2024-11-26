@@ -1,4 +1,4 @@
-package com.livmas.my_collections_app.data.remote.data_sources
+package com.livmas.my_collections_app.data.remote
 
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.HttpTimeout

@@ -23,7 +23,6 @@ class ShopListRepositoryImpl(
         return fetchAuthorized { authKey ->
             val response = listRemoteDataSource.getShopLists(authKey)
 
-            check (response.success)
             response.shopList.map { it.toDomain() }
         }
     }
@@ -35,7 +34,6 @@ class ShopListRepositoryImpl(
                 request = CreateListRequest(shopListInfo.name)
             )
 
-            check (result.success)
             shopListInfo.copy(
                 id = result.listId
             )
@@ -49,7 +47,6 @@ class ShopListRepositoryImpl(
                 request = DeleteListRequest(shopListInfo.id)
             )
 
-            check (result.newValue)
             result
         }
     }
@@ -58,21 +55,18 @@ class ShopListRepositoryImpl(
         return fetchAuthorized { authKey ->
             val result = listRemoteDataSource.getListContent(authKey, GetListContentRequest(listId))
 
-            check (result.success)
             result.items.map { it.toDomain() }
         }
     }
 
     override suspend fun deleteListItem(listId: Long, itemId: Long): ResourceFlow<Unit> {
         return fetchAuthorized { authKey ->
-            val result = listRemoteDataSource.deleteListItem(
+            listRemoteDataSource.deleteListItem(
                 authKey = authKey,
                 request = DeleteListItemRequest(
                     listId, itemId
                 )
             )
-
-            check (result.success)
         }
     }
 

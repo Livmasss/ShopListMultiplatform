@@ -1,6 +1,5 @@
 package com.livmas.my_collections_app.presentation.screens.home
 
-import com.livmas.my_collections_app.data.remote.data_sources.KtorClient
 import com.livmas.my_collections_app.domain.models.ShopListInfo
 import com.livmas.my_collections_app.domain.usecases.CreateShopListUseCase
 import com.livmas.my_collections_app.domain.usecases.DeleteShopListUseCase
@@ -24,10 +23,6 @@ class HomeViewModel(
 ): ViewModel() {
     private val _uiState: MutableStateFlow<HomeScreenState> = MutableStateFlow(HomeScreenState())
     val uiState = _uiState.asStateFlow()
-
-    override fun onCleared() {
-        KtorClient.client.close()
-    }
 
     fun initiateData() {
         viewModelScope.launch {
