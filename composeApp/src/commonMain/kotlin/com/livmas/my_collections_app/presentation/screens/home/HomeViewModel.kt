@@ -62,12 +62,7 @@ class HomeViewModel(
 
     private fun createShopList(intent: HomeScreenIntent.CreateShopListIntent) {
         viewModelScope.launch {
-            createShopListUseCase.execute(
-                ShopListInfo(
-                    id = 0,
-                    name = intent.state.name
-                )
-            ).collectLatest { resource ->
+            createShopListUseCase.execute(intent.state.toDomain()).collectLatest { resource ->
                 if (resource !is Resource.Success) {
                     resource.handleScreenState()
                     return@collectLatest

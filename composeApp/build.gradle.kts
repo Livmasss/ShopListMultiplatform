@@ -91,6 +91,9 @@ kotlin {
             implementation(libs.atomicfu)
             implementation(libs.datastore.preferences)
         }
+        commonTest.dependencies {
+            implementation(libs.kotlin.test)
+        }
     }
 }
 

@@ -9,9 +9,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import com.livmas.my_collections_app.presentation.models.ShoppingItemModel
 import com.livmas.my_collections_app.presentation.screens.shop_list.ShopListScreenIntent
-import com.livmas.my_collections_app.presentation.widgets.BaseIntField
-import com.livmas.my_collections_app.presentation.widgets.BaseTextField
+import com.livmas.my_collections_app.presentation.widgets.IntField
+import com.livmas.my_collections_app.presentation.widgets.MyTextField
 import com.livmas.my_collections_app.utils.BaseDialog
+import com.livmas.my_collections_app.utils.removeExtraSpaces
 import mycollectionsapp.composeapp.generated.resources.Res
 import mycollectionsapp.composeapp.generated.resources.label_count
 import mycollectionsapp.composeapp.generated.resources.label_create
@@ -23,36 +24,37 @@ fun CreateShoppingItemDialog(
     onDismissRequest: () -> Unit,
     onIntent: (ShopListScreenIntent.CreateShoppingItem) -> Unit
 ) {
-    var uiState by rememberSaveable(
+    var dialogState by rememberSaveable(
         saver = CreateShoppingItemUiStateSaver()
     ) { mutableStateOf(CreateShoppingItemUiState()) }
 
     BaseDialog(
         onDismissRequest = onDismissRequest
     ) {
-        BaseTextField(
-            value = uiState.text,
+        MyTextField(
+            value = dialogState.text,
             onValueChange = { value ->
-                uiState = uiState.copy(text = value)
+                dialogState = dialogState.copy(text = value)
             },
             labelResource = Res.string.label_name
         )
-        BaseIntField(
-            value = uiState.count,
+        IntField(
+            value = dialogState.count,
             onValueChange = { value ->
-                uiState = uiState.copy(
+                dialogState = dialogState.copy(
                     count = value
                 )
             },
             labelResource = Res.string.label_count
         )
         Button(
+            enabled = dialogState.text.isNotBlank() && dialogState.count != null,
             onClick = {
                 onIntent(ShopListScreenIntent.CreateShoppingItem(
                     itemModel = ShoppingItemModel(
                         id = 0,
-                        text = uiState.text,
-                        count = uiState.count ?: 0,
+                        text = dialogState.text.removeExtraSpaces(),
+                        count = dialogState.count ?: 0,
                         isCrossed = false
                     ),
                     onSuccess = onDismissRequest

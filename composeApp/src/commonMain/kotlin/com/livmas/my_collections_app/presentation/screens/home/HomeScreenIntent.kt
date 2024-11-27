@@ -5,7 +5,7 @@ import com.livmas.my_collections_app.presentation.screens.home.create_list.Creat
 
 sealed interface HomeScreenIntent {
     data class CreateShopListIntent(
-        val state: CreateShopListState,
+        val state: ShopListInfoModel,
         val onSuccess: () -> Unit
     ): HomeScreenIntent
 
