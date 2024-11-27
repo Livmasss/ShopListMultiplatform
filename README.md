@@ -10,5 +10,6 @@ This is a Kotlin Multiplatform project targeting Android, iOS.
 * `/iosApp` contains iOS applications. Even if you’re sharing your UI with Compose Multiplatform, 
   you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
 
+I dont have a macbook so i cant develop for IOS, so  actual realizations for IOS are mocked with TODO. For example, saving user key in datastore is not implemented for this platform.
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
+https://github.com/user-attachments/assets/eb7e9bd1-6642-4615-97be-42dfd86d7964
